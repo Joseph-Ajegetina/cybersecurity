@@ -1,0 +1,190 @@
+================================================================================
+                    TASK 3: DECRYPTION RESULTS
+                    Classical Encryption Lab
+================================================================================
+
+Date: 2025-11-14
+Lab: Classical Encryption - Substitution and Transposition Ciphers
+
+================================================================================
+CIPHERTEXT 1: MONOALPHABETIC/CAESAR CIPHER
+================================================================================
+
+ENCRYPTED:
+QEB NRFZH YOLTK CLU GRJMP LSBO QEB IXWV ALD
+
+DECRYPTED:
+THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG
+
+METHOD:
+Caesar Cipher Brute Force
+Shift: 23 (or equivalently -3)
+
+EXPLANATION:
+This ciphertext was encrypted using a simple Caesar cipher with a shift of 3.
+Each letter was shifted 3 positions forward in the alphabet:
+  A→D, B→E, C→F, ... X→A, Y→B, Z→C
+
+To decrypt, we shift 23 positions forward (or 3 positions backward):
+  D→A, E→B, F→C, ... A→X, B→Y, C→Z
+
+The decryption was successful because:
+1. Only 26 possible keys (trivial to brute force)
+2. Contains common English words (THE, QUICK, BROWN, FOX)
+3. Instantly recognizable as valid English text
+
+CIPHER DETAILS:
+- Type: Caesar Cipher (monoalphabetic substitution)
+- Key: Shift by 3
+- Keyspace: 26 possible keys
+- Attack complexity: O(26) - trivial
+- Time to break: Milliseconds
+
+
+================================================================================
+CIPHERTEXT 2: COLUMNAR TRANSPOSITION
+================================================================================
+
+ENCRYPTED:
+DNETHEEFTLALTAEEWHDLSOCEASTFLLO
+
+DECRYPTED:
+[NOT SUCCESSFULLY DECRYPTED]
+
+METHOD ATTEMPTED:
+1. Common transposition keys tested:
+   - KEY, CODE, CIPHER, SECRET, HELLO, WORLD, FLED, FLEET, MEET, ALPHA, BETA, GAMMA
+   - None produced readable English text
+
+2. Pattern analysis:
+   - Visible fragments: "THE", "EAST" present in ciphertext
+   - This confirms it's a transposition cipher (original letters preserved)
+   - Length: 31 characters
+
+OBSERVATIONS:
+The ciphertext contains the fragments "THE" and "EAST", which suggests:
+- It is indeed a transposition cipher (letters unchanged, only rearranged)
+- The key is not among the common keys tested
+- The plaintext likely contains words like "THE", "EAST", "FLEET", "DEFEND"
+
+POSSIBLE PLAINTEXTS (EDUCATED GUESSES):
+Based on visible fragments and common military/navigation messages:
+- "DEFEND THE EAST WALL OF THE CASTLE" (+ padding)
+- "THE FLEET HAS LOCATED EAST OF WALL"
+- "MEET AT THE USUAL PLACE EAST OF..."
+
+CIPHER DETAILS:
+- Type: Columnar Transposition
+- Key: Unknown (not in common key list)
+- Keyspace: n! for n-letter key
+- Attack complexity: Depends on key length
+- Status: REQUIRES ACTUAL KEY TO DECRYPT
+
+NOTES:
+Without the actual transposition key, complete decryption is not possible.
+Would need to either:
+  a) Test all permutations for all key lengths (computationally expensive)
+  b) Use anagramming techniques with dictionary
+  c) Obtain the key from the other group
+
+
+================================================================================
+CIPHERTEXT 3: DOUBLE ENCRYPTION
+================================================================================
+
+ENCRYPTED:
+HTEI QUNCI KBRWO NFOXU MPSJO VRETH ELAZY DOG
+
+DECRYPTED:
+[NOT SUCCESSFULLY DECRYPTED]
+
+METHODS ATTEMPTED:
+1. Transposition → Caesar (260 combinations tested)
+   - Tried 10 common transposition keys
+   - For each, tried all 26 Caesar shifts
+   - No match found
+
+2. Caesar → Transposition (260 combinations tested)
+   - Tried all 26 Caesar shifts
+   - For each, tried 10 common transposition keys
+   - No match found
+
+OBSERVATIONS:
+Interesting pattern: "ELAZY DOG" is visible in the ciphertext!
+This strongly suggests:
+- The encryption is NOT truly double encrypted
+- OR it uses partial transposition
+- OR one cipher has identity mappings
+- Appears to be weak/broken encryption
+
+The fact that "LAZY" and "DOG" are clearly visible means:
+- These letters were not substituted
+- They might have been only transposed
+- The plaintext is likely "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG"
+
+CIPHER DETAILS:
+- Type: Double Encryption (claimed)
+- Likely methods: Transposition + Caesar (or similar)
+- Keys: Unknown
+- Keyspace: Very large (key1 × key2 combinations)
+- Attack complexity: High for true double encryption
+- Status: PARTIAL DECRYPTION (can see "LAZY DOG")
+
+THEORY:
+Given that we can see plaintext words, this may be:
+1. Simple transposition only (not double encrypted)
+2. Transposition with very weak Caesar shift
+3. Columnar transposition that preserved some word boundaries
+
+RECOMMENDED APPROACH:
+Since "LAZY DOG" is visible, try anagramming the entire ciphertext
+with the constraint that it should form the pangram:
+"THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG"
+
+
+================================================================================
+SUMMARY TABLE
+================================================================================
+
+┌─────────────┬──────────────────────────────┬──────────────────────────────┬──────────────┐
+│ Ciphertext  │ Encrypted                    │ Decrypted                    │ Status       │
+├─────────────┼──────────────────────────────┼──────────────────────────────┼──────────────┤
+│ 1 (Caesar)  │ QEB NRFZH YOLTK CLU GRJMP    │ THE QUICK BROWN FOX JUMPS    │ ✓ SUCCESS    │
+│             │ LSBO QEB IXWV ALD            │ OVER THE LAZY DOG            │              │
+├─────────────┼──────────────────────────────┼──────────────────────────────┼──────────────┤
+│ 2 (Trans)   │ DNETHEEFTLALTAEEWHDLSOCEAST  │ [Unknown - key not found]    │ ✗ FAILED     │
+│             │ FLLO                         │                              │              │
+├─────────────┼──────────────────────────────┼──────────────────────────────┼──────────────┤
+│ 3 (Double)  │ HTEI QUNCI KBRWO NFOXU MPSJO │ [Unknown - see LAZY DOG]     │ ⚠ PARTIAL    │
+│             │ VRETH ELAZY DOG              │                              │              │
+└─────────────┴──────────────────────────────┴──────────────────────────────┴──────────────┘
+
+
+
+
+================================================================================
+LESSONS LEARNED
+================================================================================
+
+1. CAESAR CIPHER:
+   - Trivially broken by brute force (only 26 keys)
+   - No security in modern context
+   - Historical significance only
+
+2. COLUMNAR TRANSPOSITION:
+   - Much stronger than Caesar when key is unknown
+   - Vulnerable to frequency analysis won't work (letters unchanged)
+   - Requires anagramming or key recovery techniques
+   - Visible fragments can provide clues
+
+3. DOUBLE ENCRYPTION:
+   - Significantly stronger than single encryption
+   - Keyspace is product of both cipher keyspaces
+   - Still vulnerable if patterns are preserved
+   - This example appears poorly implemented (visible plaintext!)
+
+4. IMPORTANCE OF KEY SECRECY:
+   - Without keys, even simple ciphers can be difficult to break
+   - Common key lists help but don't guarantee success
+   - Key exchange (Task 2 requirement) is crucial
+
